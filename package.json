@@ -1,0 +1,26 @@
+{
+  "name": "coursework-2-individual",
+  "version": "1.0.0",
+  "description": "CW2 individual",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Apurva-MDX/CW2-Individual.git"
+  },
+  "author": "Apurva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Apurva-MDX/CW2-Individual/issues"
+  },
+  "homepage": "https://github.com/Apurva-MDX/CW2-Individual#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "mongodb": "^4.4.0"
+  },
+  "devDependencies": {}
+}
