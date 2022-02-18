@@ -3,16 +3,20 @@ var app = express();
 const path = require("path");
 const fs = require("fs");
 var cors = require('cors');
+
+
 //APPLICATION MIDDLEWARES
 app.use(cors())
 app.use(express.json());
-app.use(function (req, res, next) {
+
+app.use(function (req, res, next) {                               //logger
     console.log("Request URL: " + req.url);
     console.log("Request Date: " + new Date());
     next();
 });
+
 app.use(function (req, res, next) {
-    // Uses path.join to find the path where the file should be
+    // Uses path.join to find the path where the file should be             //static file
     var filePath = path.join(__dirname, 'static', req.url);
     // Built-in fs.stat gets info about a file
     fs.stat(filePath, function (err, fileInfo) {
@@ -25,6 +29,8 @@ app.use(function (req, res, next) {
     });
 });
 
+
+//MongoDB connection
 const {MongoClient} = require("mongodb");
 const ObjectID = require('mongodb').ObjectID;
 const uri = "mongodb+srv://apurva:ss224314@cluster0.gkhvm.mongodb.net/webstore?retryWrites=true&w=majority";
@@ -45,7 +51,7 @@ app.param('collectionName', (req, res, next, collectionName) => {
 });
 
 app.get('/', (req, res, next) => {
-    res.send('Select a collection, e.g., /collection/messages');
+    res.send('Select a collection, e.g., /collection/lessons');
 });
 
 
