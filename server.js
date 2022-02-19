@@ -51,7 +51,7 @@ app.param('collectionName', (req, res, next, collectionName) => {
 });
 
 app.get('/', (req, res, next) => {
-    res.send('Select a collection, e.g., /collection/lessons');
+    res.send('Select a collection, e.g., /collection/lessons e.g., /collection/order');
 });
 
 
