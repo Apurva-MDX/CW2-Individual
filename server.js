@@ -1,22 +1,21 @@
+// requires the express module
 const express = require('express');
+// calls the express function to start a new application
 var app = express();
+// requires the modules needed
 const path = require("path");
 const fs = require("fs");
 var cors = require('cors');
-
-
-//APPLICATION MIDDLEWARES
+//application middlewares
 app.use(cors())
 app.use(express.json());
-
-app.use(function (req, res, next) {                               //logger
+app.use(function (req, res, next) {
     console.log("Request URL: " + req.url);
     console.log("Request Date: " + new Date());
     next();
 });
-
 app.use(function (req, res, next) {
-    // Uses path.join to find the path where the file should be             //static file
+    // Uses path.join to find the path where the file should be
     var filePath = path.join(__dirname, 'static', req.url);
     // Built-in fs.stat gets info about a file
     fs.stat(filePath, function (err, fileInfo) {
@@ -24,13 +23,13 @@ app.use(function (req, res, next) {
             next();
             return;
         }
+        // if the fie exists, send the file if not continue to the next middleware
         if (fileInfo.isFile()) res.sendFile(filePath);
         else next();
     });
 });
 
-
-//MongoDB connection
+// connects to mongodb
 const {MongoClient} = require("mongodb");
 const ObjectID = require('mongodb').ObjectID;
 const uri = "mongodb+srv://apurva:ss224314@cluster0.gkhvm.mongodb.net/webstore?retryWrites=true&w=majority";
@@ -38,23 +37,23 @@ let db;
 MongoClient.connect(uri, (err, client) => {
     if(!err){
         db = client.db('webstore');
-        console.log("connected successfully")
     }else{
         console.log(err);
     }
 });
 
-
+// gets the mongodb collection name
 app.param('collectionName', (req, res, next, collectionName) => {
     req.collection = db.collection(collectionName);
     return next()
 });
 
+// allows to specify a collection name in the url
 app.get('/', (req, res, next) => {
-    res.send('Select a collection, e.g., /collection/lessons e.g., /collection/order');
+    res.send('Select a collection, e.g., /collection/messages');
 });
 
-
+// retrieves collection
 app.get('/collection/:collectionName', (req, res, next) => {
     req.collection.find({}).toArray((e, results) => {
         if (e) return next(e)
@@ -62,6 +61,7 @@ app.get('/collection/:collectionName', (req, res, next) => {
     })
 });
 
+// adds the product information in the body of the request
 app.post('/collection/:collectionName', (req, res, next) => {
     req.collection.insert(req.body, (e, results) => {
         if (e) return next(e);
@@ -70,6 +70,7 @@ app.post('/collection/:collectionName', (req, res, next) => {
     })
 })
 
+// retrieves an object with a specific id
 app.put('/collection/:collectionName/:id', (req, res, next) => {
     req.collection.update(
         { _id: new ObjectID(req.params.id) },
