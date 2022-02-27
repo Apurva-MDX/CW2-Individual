@@ -50,7 +50,7 @@ app.param('collectionName', (req, res, next, collectionName) => {
 
 // allows to specify a collection name in the url
 app.get('/', (req, res, next) => {
-    res.send('Select a collection, e.g., /collection/messages');
+    res.send('Select a collection, e.g., /collection/lesson');
 });
 
 // retrieves collection
